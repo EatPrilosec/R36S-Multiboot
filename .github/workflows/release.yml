@@ -38,7 +38,7 @@ jobs:
         pan4elec:   [pan4elec, skippan4elec]
         rocknix:    [rocknix, skiprocknix]
         uos:        [uos, skipuos]
-        andr36oid:  [andr36oid, andr36oidg, skipandr36oid]
+        andr36oid:  [andr36oid, skipandr36oid]
         armbian:    [skiparmbian, bookworm, jammy]
         exclude:
           - amberelec: skipamberelec
@@ -62,20 +62,6 @@ jobs:
             uos: skipuos
             andr36oid: skipandr36oid
             armbian: jammy
-          - amberelec: skipamberelec
-            ark: skipark
-            pan4elec: skippan4elec
-            rocknix: skiprocknix
-            uos: skipuos
-            andr36oid: andr36oid
-            armbian: skiparmbian
-          - amberelec: skipamberelec
-            ark: skipark
-            pan4elec: skippan4elec
-            rocknix: skiprocknix
-            uos: skipuos
-            andr36oid: andr36oidg
-            armbian: skiparmbian
           - amberelec: amberelec
             ark: skipark
             pan4elec: skippan4elec
