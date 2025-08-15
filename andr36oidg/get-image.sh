@@ -14,10 +14,11 @@
 #     rm -rf dl
 # fi
 
-# if [[ ! -f "gapps.zip" ]]
-# then
-#     wget -Ogapps.zip "https://archive.org/download/MindTheGapps/MindTheGapps-11.0.0-arm64-20210412_124247.zip"
-# fi
+if [[ ! -f "gapps.zip" ]]
+then
+    wget -Ogapps.zip "https://archive.org/download/MindTheGapps/MindTheGapps-11.0.0-arm64-20210412_124247.zip"
+fi
+
 
 asset_url=$(curl -s "https://api.github.com/repos/andr36oid/releases/releases" \
   | jq -r '[.[]] | sort_by(.published_at) | reverse | .[0].assets[] | select(.name | test("'r36s'")) | .browser_download_url' \

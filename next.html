@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Downloader</title>
+  <style>
+
+    body {
+      padding: 25px;
+      background-color: #121212;
+      color: #ff6f00;
+      font-family: sans-serif;
+    }
+
+    input[type="text"] {
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #555;
+        border-radius: 4px;
+        background-color: #333;
+        color: #eee;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #003f7a;
+    }
+
+    #assetList a {
+      color: #ff6f00;
+      text-decoration: underline;
+      margin-bottom: 5px;
+      display: block;
+      transition: color 0.2s;
+    }
+
+    #assetList a:hover {
+        text-decoration: underline;
+        color: #ff9100;
+    }
+
+    #assetList a:active,
+    #assetList a:visited {
+        color: #b34700;
+    }
+
+    h2 {
+      margin-bottom: 4px;
+      margin-top: 6px;
+    }
+
+    h3 {
+      margin-bottom: 4px;
+      margin-top: 6px;
+    }
+
+    h4 {
+      margin-bottom: 4px;
+      margin-top: 6px;
+    }
+
+    input[type="checkbox"], input[type="radio"] {
+      accent-color: #ff6f00;
+      border: 1.5px solid #ff6f00;
+
+    }
+
+    input[type="checkbox"].styled,
+    input[type="radio"].styled {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .custom-checkbox,
+    .custom-radio {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      background: #222;
+      border: 1.5px solid #ff6f00;
+      border-radius: 4px;
+      vertical-align: middle;
+      margin-right: 6px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .custom-radio {
+      border-radius: 50%;
+    }
+
+
+    input[type="checkbox"].styled:checked + .custom-checkbox,
+    input[type="radio"].styled:checked + .custom-radio {
+      background: #ff6f00;
+      box-shadow: 0 0 0 2px #ff6f00 inset;
+    }
+
+
+    .custom-checkbox:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    input[type="checkbox"].styled:checked + .custom-checkbox:after {
+      display: block;
+    }
+
+    .custom-checkbox:after {
+      left: 5px;
+      top: 1px;
+      width: 4px;
+      height: 9px;
+      border: solid #222;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+
+
+    .custom-radio:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    input[type="radio"].styled:checked + .custom-radio:after {
+      display: block;
+    }
+
+    .custom-radio:after {
+      top: 4px;
+      left: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #222;
+    }
+
+    input[type="checkbox"].myCheckbox:disabled + .custom-checkbox {
+      background: #7a3c00;
+      border-color: #b34700;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+
+<h2>R36S-Multiboot image picker</h2>
+<p>Check the OSes you want to include in the image name, then select the Armbian version if applicable.</p>
+<p>The image name and download links will be generated below.</p>
+
+<h3>Select OSes</h3>
+<label>
+  <input type="checkbox" class="styled myCheckbox" name="option1" value="amberelec" checked>
+  <span class="custom-checkbox"></span>
+  Amberelec (prerelease)
+</label><br>
+<label>
+  <input type="checkbox" class="styled myCheckbox" name="option2" value="ark" checked>
+  <span class="custom-checkbox"></span>
+  ArkOS
+</label><br>
+<label>
+  <input type="checkbox" class="styled myCheckbox" name="option3" value="pan4elec" checked>
+  <span class="custom-checkbox"></span>
+  PAN4ELEC
+</label><br>
+<label>
+  <input type="checkbox" class="styled myCheckbox" name="option4" value="rocknix" checked>
+  <span class="custom-checkbox"></span>
+  Rocknix
+</label><br>
+<label>
+  <input type="checkbox" class="styled myCheckbox" name="option5" value="uos" checked>
+  <span class="custom-checkbox"></span>
+  UnofficialOS (dev)
+</label><br>
+<label>
+  <input type="checkbox" class="styled myCheckbox" name="option6" value="andr36oid" checked>
+  <span class="custom-checkbox"></span>
+  Andr36oid
+</label><br>
+<div style="margin-left:24px;">
+  <label>
+    <input type="checkbox" class="styled myCheckbox" name="option6" value="andr36oidg">
+    <span class="custom-checkbox"></span>
+    w/ GApps
+  </label>
+</div>
+<br>
+<h4>Select Armbian Version</h4>
+<label>
+  <input type="radio" class="styled myCheckbox" name="option7" value="" id="noarmbian" checked>
+  <span class="custom-radio"></span>
+  No Armbian
+</label><br>
+<label>
+  <input type="radio" class="styled myCheckbox" name="option7" value="bookworm" id="bookworm">
+  <span class="custom-radio"></span>
+  Armbian Bookworm (recommended)
+</label><br>
+<label>
+  <input type="radio" class="styled myCheckbox" name="option7" value="jammy" id="jammy">
+  <span class="custom-radio"></span>
+  Armbian Jammy 
+</label><br>
+
+<br><br>
+<b>Filename:</b> <i id="result"></i>
+<br><br>
+<!-- <p id="result"></p> -->
+<h4>Download links</h4>
+<div id="assetList"></div>
+
+<footer id="repoFooter" style="margin-top:2em; color:#ff6f00; font-size:0.95em;"></footer>
+
+<script>
+
+function wildcardToRegExp(pattern) {
+  pattern = pattern.replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&');
+  pattern = pattern.replace(/\*/g, '.*');
+  return new RegExp('^' + pattern + '$', 'i');
+}
+
+function getRepoInfoFromLocation() {
+
+  const match = window.location.hostname.match(/^([^.]+)\.github\.io$/);
+  const owner = match ? match[1] : "EatPrilosec";
+  const repo = "R36S-Multiboot";
+  return { owner, repo };
+}
+
+async function fetchAndDisplayAssets() {
+  const { owner, repo } = getRepoInfoFromLocation();
+  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/releases/latest`;
+  const resultElem = document.getElementById("result");
+  const assetListElem = document.getElementById("assetList");
+  const pattern = resultElem.textContent;
+  const regex = wildcardToRegExp(pattern);
+
+  assetListElem.innerHTML = "Loading...";
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const assets = data.assets || [];
+    const matches = assets.filter(asset => regex.test(asset.name));
+
+    // Sort numerically by extension (e.g., .001, .002, ...)
+    matches.sort((a, b) => {
+      const extA = a.name.match(/\.([0-9]{3})$/);
+      const extB = b.name.match(/\.([0-9]{3})$/);
+      const numA = extA ? parseInt(extA[1], 10) : 0;
+      const numB = extB ? parseInt(extB[1], 10) : 0;
+      return numA - numB;
+    });
+
+    if (matches.length === 0) {
+      assetListElem.innerHTML = "No matching assets found.";
+      return;
+    }
+
+    assetListElem.innerHTML = matches.map(asset =>
+      `<a href="${asset.browser_download_url}" target="_blank">${asset.name}</a>`
+    ).join('');
+  } catch (e) {
+    assetListElem.innerHTML = "Error fetching assets.";
+  }
+}
+
+function getStringFromCheckboxes() {
+  const checkboxes = document.querySelectorAll('.myCheckbox');
+  let values = [];
+
+  // Get both Andr36oid and w/ GApps checkboxes
+  const andr36oid = document.querySelector('input[name="option6"][value="andr36oid"]');
+  const andr36oidg = document.querySelector('input[name="option6"][value="andr36oidg"]');
+
+  // If "w/ GApps" is checked, keep Andr36oid visually checked, but only add "andr36oidg" to values
+  if (andr36oidg && andr36oidg.checked) {
+    if (andr36oid) andr36oid.checked = true;
+    checkboxes.forEach(function(checkbox) {
+      // Add all checked values except "andr36oid"
+      if (
+        checkbox.checked &&
+        checkbox.value &&
+        !(checkbox.value === "andr36oid")
+      ) {
+        values.push(checkbox.value);
+      }
+    });
+  } else {
+    checkboxes.forEach(function(checkbox) {
+      if (checkbox.checked && checkbox.value) {
+        values.push(checkbox.value);
+      }
+    });
+  }
+
+  let resultString = values.join("-");
+  resultString = "R36S-Multiboot-" + resultString + "-20*.img.xz.7z.*";
+  document.getElementById("result").textContent = resultString;
+
+  fetchAndDisplayAssets();
+}
+
+
+document.querySelectorAll('.myCheckbox').forEach(function(checkbox) {
+  checkbox.addEventListener('change', getStringFromCheckboxes);
+});
+
+// Add this block to handle "Armbian (all)" radio button logic
+
+// document.getElementById('all').addEventListener('change', function() {
+//   const allChecked = this.checked;
+//   document.querySelectorAll('input[type="checkbox"].myCheckbox').forEach(function(cb) {
+//     cb.checked = allChecked;
+//     cb.disabled = allChecked;
+//   });
+//   getStringFromCheckboxes();
+// });
+
+// Also re-enable checkboxes if any other Armbian radio is selected
+document.querySelectorAll('input[type="radio"].myCheckbox:not(#all)').forEach(function(radio) {
+  radio.addEventListener('change', function() {
+    if (this.checked) {
+      document.querySelectorAll('input[type="checkbox"].myCheckbox').forEach(function(cb) {
+        cb.disabled = false;
+      });
+      getStringFromCheckboxes();
+    }
+  });
+});
+
+getStringFromCheckboxes();
+
+function updateRepoFooter() {
+  const { owner, repo } = getRepoInfoFromLocation();
+  const footer = document.getElementById("repoFooter");
+  footer.innerHTML = `Using GitHub repo: <a href="https://github.com/${owner}/${repo}" target="_blank" style="color:#ff6f00;">${owner}/${repo}</a>`;
+}
+updateRepoFooter();
+</script>
+
+</body>
+</html>
